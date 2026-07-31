@@ -1,10 +1,17 @@
 #include <Arduino.h>
 
+#include <app/Application.h>
 
-void setup() {
 
+Application app;
+
+
+void setup() 
+{
+  app.begin();
 }
 
-void loop() {
-
+void loop() 
+{
+  app.update();
 }
