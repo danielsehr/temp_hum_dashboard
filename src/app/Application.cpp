@@ -1,11 +1,11 @@
 # include "Application.h"
 
-# include <spdlog/spdlog.h>
+# include <logger/Logger.h>
 
 
 void Application::begin()
 {
-    spdlog::info("Application started!");
+    Logger::info("Application started.")    
 }
 
 
