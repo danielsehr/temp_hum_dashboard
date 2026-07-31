@@ -5,7 +5,9 @@
 
 void Application::begin()
 {
-    Logger::info("Application started.")    
+    Logger::begin();
+
+    LOG_INFO("Application started.");
 }
 
 
