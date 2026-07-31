@@ -6,6 +6,7 @@
 #include <WiFi.h>
 
 
+// public
 void Application::begin()
 {
     Logger::begin();
@@ -38,6 +39,7 @@ void Application::update()
 }
 
 
+// private
 void Application::initializeAP()
 {
     LOG_INFO("Start access point...");
