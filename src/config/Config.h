@@ -2,6 +2,7 @@
 
 #include <cstdint>
 
+
 namespace Config
 {
     constexpr char AP_NAME[] = "Temp_Hum_Dashboard";
