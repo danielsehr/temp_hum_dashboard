@@ -6,8 +6,6 @@
 void Logger::begin()
 {
     Serial.begin(115200);
-
-    while (!Serial) {}
 }
 
 
