@@ -1,5 +1,8 @@
 #pragma once
 
+#include "web/WebServer.h"
+
+
 class Application
 {
 public:
@@ -8,4 +11,9 @@ public:
     void initializeFileSystem();
     
     void update();
+
+private:
+    WebServer webServer;
+
+    void initializeAP();
 };

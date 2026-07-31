@@ -1,7 +1,9 @@
 # include "Application.h"
+#include "config/Config.h"
+#include "logger/Logger.h"
 
 #include <LittleFS.h>
-# include <logger/Logger.h>
+#include <WiFi.h>
 
 
 void Application::begin()
@@ -9,6 +11,12 @@ void Application::begin()
     Logger::begin();
 
     LOG_INFO("Application started.");
+
+    initializeFileSystem();
+
+    initializeAP();
+
+    webServer.begin();
 }
 
 
@@ -27,4 +35,23 @@ void Application::initializeFileSystem()
 void Application::update()
 {
     // Service comes later
+}
+
+
+void Application::initializeAP()
+{
+    LOG_INFO("Start access point...");
+
+
+    WiFi.mode(WIFI_AP);
+
+    if (!WiFi.softAP(Config::AP_NAME, Config::AP_PASSWORD))
+    {
+        LOG_ERROR("Failed to start AP.");
+        return;
+    }
+
+
+    LOG_INFO("AP started.");
+    LOG_INFO(WiFi.softAPIP().toString().c_str());
 }
