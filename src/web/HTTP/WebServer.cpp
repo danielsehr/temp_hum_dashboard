@@ -4,15 +4,21 @@
 #include <LittleFS.h>
 
 
+WebServer::WebServer(WebSocketManager& webSocket)
+    : webSocketManager_(webSocket)
+{
+}
+
+
 void WebServer::begin()
 {
     registerRoutes();
 
-    server.serveStatic("/", LittleFS, "/");
+    server_.serveStatic("/", LittleFS, "/");
 
-    webSocket.begin(server);
+    webSocketManager_.begin(server_);
 
-    server.begin();
+    server_.begin();
 
     LOG_INFO("HTTP server started.");
 }
@@ -20,7 +26,7 @@ void WebServer::begin()
 
 void WebServer::registerRoutes()
 {
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest* request)
+    server_.on("/", HTTP_GET, [](AsyncWebServerRequest* request)
     {
         request->send(LittleFS, "/index.html", "text/html");
     });

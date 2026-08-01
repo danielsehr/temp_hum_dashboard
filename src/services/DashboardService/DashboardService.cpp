@@ -2,14 +2,14 @@
 
 
 DashboardService::DashboardService(WebSocketManager& socket)
-    : socket_(socket)
+    : webSocketManager_(socket)
 {
 }
 
 
 void DashboardService::publish(const SensorData& data)
 {
-    StaticJsonDocument<128> json;
+    JsonDocument json;
 
     json["timestamp"] = data.timestamp;
     json["humidity"] = data.humidityPercent;
@@ -19,5 +19,5 @@ void DashboardService::publish(const SensorData& data)
 
     serializeJson(json, buffer, sizeof(buffer));
 
-    socket_.broadcast(buffer);
+    webSocketManager_.broadcast(buffer);
 }

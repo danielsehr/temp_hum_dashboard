@@ -2,17 +2,11 @@
 #include "logger/Logger.h"
 
 
-WebSocketManager::WebSocketManager()
-    : webSocket("/ws")
-{
-}
-
-
 void WebSocketManager::begin(AsyncWebServer& server)
 {
-    webSocket.onEvent(onEvent);
+    webSocket_.onEvent(onEvent);
 
-    server.addHandler(&webSocket);
+    server.addHandler(&webSocket_);
 
     LOG_INFO("Websocket initialized.");
 }
@@ -61,5 +55,5 @@ void WebSocketManager::onEvent(
 
 void WebSocketManager::broadcast(const char* message)
 {
-    webSocket.textAll(message);
+    webSocket_.textAll(message);
 }

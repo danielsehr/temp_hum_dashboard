@@ -6,16 +6,14 @@
 class WebSocketManager
 {
 public:
-
-    WebSocketManager();
+    WebSocketManager() = default;
 
     void begin(AsyncWebServer& server);
 
     void broadcast(const char* message);
 
 private:
-
-    AsyncWebSocket webSocket;
+    AsyncWebSocket webSocket_{"/ws"};
 
     static void onEvent(
         AsyncWebSocket* server,

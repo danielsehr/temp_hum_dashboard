@@ -12,5 +12,5 @@ public:
     void publish(const SensorData& data);
 
 private:
-    WebSocketManager& socket_;
+    WebSocketManager& webSocketManager_;
 };

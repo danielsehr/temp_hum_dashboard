@@ -7,6 +7,14 @@
 
 
 // public
+Application::Application()
+    : 
+    webServer_(webSocketManager_),
+    dashboardService_(webSocketManager_)
+{
+}
+
+
 void Application::begin()
 {
     Logger::begin();
@@ -17,9 +25,9 @@ void Application::begin()
 
     initializeAP();
 
-    webServer.begin();
+    webServer_.begin();
 
-    sensorService.begin();
+    sensorService_.begin();
 }
 
 
@@ -37,7 +45,9 @@ void Application::initializeFileSystem()
 
 void Application::update()
 {
-    sensorService.update();
+    sensorService_.update();
+
+    dashboardService_.publish(sensorService_.latestMeasurement());
 }
 
 

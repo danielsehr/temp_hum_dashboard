@@ -9,15 +9,14 @@
 class WebServer
 {
 public:
+    explicit WebServer(WebSocketManager& webSocket);
 
     void begin();
 
-
 private:
+    AsyncWebServer server_{Config::HHTP_PORT};
 
-    AsyncWebServer server{Config::HHTP_PORT};
-
-    WebSocketManager webSocket;
+    WebSocketManager& webSocketManager_;
 
     void registerRoutes();
 };
