@@ -1,6 +1,7 @@
 #pragma once
 
 #include "web/HTTP/WebServer.h"
+#include "services/SensorService.h"
 
 
 class Application
@@ -14,6 +15,8 @@ public:
 
 private:
     WebServer webServer;
+
+    SensorService sensorService;
 
     void initializeAP();
 };

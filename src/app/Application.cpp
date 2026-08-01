@@ -18,6 +18,8 @@ void Application::begin()
     initializeAP();
 
     webServer.begin();
+
+    sensorService.begin();
 }
 
 
@@ -35,7 +37,7 @@ void Application::initializeFileSystem()
 
 void Application::update()
 {
-    // Service comes later
+    sensorService.update();
 }
 
 
