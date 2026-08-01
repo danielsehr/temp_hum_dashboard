@@ -14,7 +14,7 @@ public:
     void begin();
 
 private:
-    AsyncWebServer server_{Config::HHTP_PORT};
+    AsyncWebServer server_{Config::HTTP_PORT};
 
     WebSocketManager& webSocketManager_;
 
