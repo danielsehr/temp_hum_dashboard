@@ -3,25 +3,36 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <title>ESP Dashboard</title>
+    <title>ESP32 Dashboard</title>
 </head>
 
 <body>
-    <h1>ESP32 Dashboard</h1>
+    <h1>
+        ESP32 Environment Dashboard
+    </h1>
+    <div>
+        <h2>Temperature</h2>
+        <p id="temperature">
+            -- °C
+        </p>
+    </div>
+
+    <div>
+        <h2>Humidity</h2>
+        <p id="humidity">
+            -- %
+        </p>
+    </div>
 
     <p>
-        Status:
+        Connection:
         <span id="status">
             Disconnected
         </span>
     </p>
 
-    <button id="send">
-        Send Message
-    </button>
-
     <script src="dashboard.js"></script>
 
 </body>
+
 </html>
