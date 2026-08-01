@@ -14,10 +14,16 @@ public:
     
     const SensorData& latestMeasurement() const;
 
+    bool hasNewMeasurement() const;
+
+    void clearNewMeasurement();
+
 private:
     DHT11Driver driver_;
 
     SensorData latest_;
 
     uint32_t lastRead_ = 0;
+
+    bool newMeasurement_ = false;
 };
