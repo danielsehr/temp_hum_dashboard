@@ -11,10 +11,15 @@ void DashboardService::publish(const SensorData& data)
 {
     JsonDocument json;
 
-    json["timestamp"] = data.timestamp;
-    json["humidity"] = data.humidityPercent;
-    json["temperature"] = data.temperatureCelcius;
+    json["type"] = "sensor";
 
+    JsonObject values = json["data"].to<JsonObject>();
+
+    values["timestamp"] = data.timestamp;
+    values["humidity"] = data.humidityPercent;
+    values["temperature"] = data.temperatureCelcius;
+
+    
     char buffer[128];
 
     serializeJson(json, buffer, sizeof(buffer));
