@@ -47,7 +47,7 @@ public:
             return buffer_[index];
         }
 
-        return buffer_[(head_ + index) % Capacity]
+        return buffer_[(head_ + index) % Capacity];
     }
 
 private:
