@@ -1,6 +1,7 @@
 #pragma once
 
 #include "config/Config.h"
+#include "web/WebSocketManager/WebSocketManager.h"
 
 #include <ESPAsyncWebServer.h>
 
@@ -15,6 +16,8 @@ public:
 private:
 
     AsyncWebServer server{Config::HHTP_PORT};
+
+    WebSocketManager webSocket;
 
     void registerRoutes();
 };

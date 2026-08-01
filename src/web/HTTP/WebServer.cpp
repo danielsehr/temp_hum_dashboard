@@ -8,6 +8,10 @@ void WebServer::begin()
 {
     registerRoutes();
 
+    server.serveStatic("/", LittleFS, "/");
+
+    webSocket.begin(server);
+
     server.begin();
 
     LOG_INFO("HTTP server started.");
