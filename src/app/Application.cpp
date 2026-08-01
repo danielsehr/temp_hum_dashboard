@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "config/Config.h"
-#include "logger/Logger.h"
+#include "utils/logger/Logger.h"
 
 #include <LittleFS.h>
 #include <WiFi.h>
