@@ -16,6 +16,29 @@ void Logger::info(const char* message)
 }
 
 
+void Logger::info(const SensorData& data)
+{
+    Serial.print("[INFO] ");
+    
+    char buffer[128];
+
+    snprintf(
+        buffer,
+        sizeof(buffer),
+        "Timestamp: %d\n"
+        "Temperature: %.1f °C\n"
+        "Humidity: %.1f%%\n"
+        "Valid: %s",
+        data.timestamp,
+        data.temperatureCelcius,
+        data.humidityPercent,
+        data.valid ? "true" : "false"
+    );
+
+    Serial.println(buffer);
+}
+
+
 void Logger::warning(const char* message)
 {
     Serial.print("[WARNING] ");

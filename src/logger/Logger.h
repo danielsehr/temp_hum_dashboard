@@ -1,5 +1,7 @@
 #pragma once
 
+#include "state/SensorData.h"
+
 
 class Logger
 {
@@ -8,6 +10,8 @@ public:
     static void begin();
 
     static void info(const char* message);
+
+    static void info(const SensorData& data);
 
     static void warning(const char* message);
 
