@@ -1,7 +1,7 @@
 #include "SensorService.h"
 #include "config/Pins.h"
 #include "config/Config.h"
-#include "logger/Logger.h"
+#include "utils/logger/Logger.h"
 
 
 SensorService::SensorService() 
