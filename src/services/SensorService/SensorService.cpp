@@ -36,7 +36,7 @@ void SensorService::update()
     latest_ = measurement;
 
     newMeasurement_ = true;
-    
+
 
     LOG_INFO("Sensor updated.\n");
     LOG_INFO(latest_);
@@ -46,4 +46,16 @@ void SensorService::update()
 const SensorData& SensorService::latestMeasurement() const
 {
     return latest_;
+}
+
+
+bool SensorService::hasNewMeasurement() const
+{
+    return newMeasurement_;
+}
+
+
+void SensorService::clearNewMeasurement()
+{
+    newMeasurement_ = false;
 }
