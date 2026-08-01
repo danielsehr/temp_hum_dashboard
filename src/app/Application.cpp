@@ -49,7 +49,7 @@ void Application::update()
 
     if (sensorService_.hasNewMeasurement())
     {
-        dashboardService_.publish(sensorService_.latestMeasurement());
+        dashboardService_.publishMeasurement(sensorService_.latestMeasurement());
     };
 
     sensorService_.clearNewMeasurement();
