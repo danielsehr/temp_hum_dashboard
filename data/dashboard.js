@@ -4,24 +4,20 @@ const socket = new WebSocket(
     `ws://${location.host}/ws`
 );
 
-socket.onopen = () =>
-{
+socket.onopen = () => {
     status.textContent = "Connected";
 };
 
-socket.onclose = () =>
-{
+socket.onclose = () => {
     status.textContent = "Disconnected";
 };
 
-socket.onmessage = (event) =>
-{
+socket.onmessage = (event) => {
     console.log(event.data);
 };
 
 document
-.getElementById("send")
-.addEventListener("click", () =>
-{
-    socket.send("Hello ESP32");
-});
+    .getElementById("send")
+    .addEventListener("click", () => {
+        socket.send("Hello ESP32");
+    });
