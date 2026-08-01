@@ -9,7 +9,7 @@ class DashboardService
 public: 
     explicit DashboardService(WebSocketManager& socket);
 
-    void publish(const SensorData& data);
+    void publishMeasurement(const SensorData& data);
 
 private:
     WebSocketManager& webSocketManager_;

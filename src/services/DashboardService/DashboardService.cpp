@@ -7,7 +7,7 @@ DashboardService::DashboardService(WebSocketManager& socket)
 }
 
 
-void DashboardService::publish(const SensorData& data)
+void DashboardService::publishMeasurement(const SensorData& data)
 {
     JsonDocument json;
 
