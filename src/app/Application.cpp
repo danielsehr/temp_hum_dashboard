@@ -1,4 +1,4 @@
-# include "Application.h"
+#include "Application.h"
 #include "config/Config.h"
 #include "logger/Logger.h"
 
