@@ -9,6 +9,9 @@ DashboardService::DashboardService(WebSocketManager& socket)
 
 void DashboardService::publishMeasurement(const SensorData& data)
 {
+    history_.push(data);
+
+    
     JsonDocument json;
 
     json["type"] = "sensor";

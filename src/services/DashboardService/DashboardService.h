@@ -1,7 +1,9 @@
 #pragma once
 
+#include "config/Config.h"
 #include "state/SensorData.h"
 #include "web/WebSocketManager/WebSocketManager.h"
+#include "utils/RingBuffer/RingBuffer.h"
 
 
 class DashboardService
@@ -13,4 +15,6 @@ public:
 
 private:
     WebSocketManager& webSocketManager_;
+
+    RingBuffer<SensorData, Config::RING_BUFFER_SIZE> history_;
 };
