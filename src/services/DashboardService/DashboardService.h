@@ -22,5 +22,7 @@ private:
     
     void serializeMeasurement(const SensorData& data, char* buffer, std::size_t bufferSize) const;
 
-    
+    void sendHistoryBegin(AsyncWebSocketClient& client);
+
+    void sendHistoryEnd(AsyncWebSocketClient& client);
 };

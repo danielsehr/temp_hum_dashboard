@@ -43,3 +43,29 @@ void DashboardService::publishHistory(AsyncWebSocketClient& client)
         webSocketManager_.send(client, buffer);
     }
 }
+
+void DashboardService::sendHistoryBegin(AsyncWebSocketClient& client)
+{
+    JsonDocument json;
+
+    json["type"] = "history_begin";
+
+    char buffer[64];
+
+    serializeJson(json, buffer, sizeof(buffer));
+
+    webSocketManager_.send(client, buffer);
+}
+
+void DashboardService::sendHistoryEnd(AsyncWebSocketClient& client)
+{
+    JsonDocument json;
+
+    json["type"] = "history_end";
+
+    char buffer[64];
+
+    serializeJson(json, buffer, sizeof(buffer));
+
+    webSocketManager_.send(client, buffer);
+}
