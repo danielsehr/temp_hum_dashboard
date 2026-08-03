@@ -13,6 +13,12 @@ public:
     void broadcast(const char* message);
 
     void send(AsyncWebSocketClient& client, const char* message);
+
+    bool hasNewClient() const;
+
+    AsyncWebSocketClient* newClient();
+
+    void clearNewClient();
     
 private:
     AsyncWebSocket webSocket_{"/ws"};

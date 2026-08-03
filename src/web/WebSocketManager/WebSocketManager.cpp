@@ -85,3 +85,18 @@ void WebSocketManager::send(AsyncWebSocketClient& client, const char* message)
 {
     client.text(message);
 }
+
+bool WebSocketManager::hasNewClient() const 
+{
+    return newClient_ != nullptr;
+}
+
+AsyncWebSocketClient* WebSocketManager::newClient()
+{
+    return newClient_;
+}
+
+void WebSocketManager::clearNewClient()
+{
+    newClient_ = nullptr;
+}
