@@ -12,6 +12,8 @@ public:
 
     void broadcast(const char* message);
 
+    void send(AsyncWebSocketClient& client, const char* message);
+
 private:
     AsyncWebSocket webSocket_{"/ws"};
 
