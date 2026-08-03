@@ -13,11 +13,13 @@ public:
     void broadcast(const char* message);
 
     void send(AsyncWebSocketClient& client, const char* message);
-
+    
 private:
     AsyncWebSocket webSocket_{"/ws"};
 
-    static void onEvent(
+    AsyncWebSocketClient* newClient_ = nullptr;
+
+    void onEvent(
         AsyncWebSocket* server,
         AsyncWebSocketClient* client,
         AwsEventType type,

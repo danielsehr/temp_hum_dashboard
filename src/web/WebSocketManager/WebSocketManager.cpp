@@ -3,7 +3,20 @@
 
 void WebSocketManager::begin(AsyncWebServer& server)
 {
-    webSocket_.onEvent(onEvent);
+    webSocket_.onEvent(
+        [this](
+            AsyncWebSocket* server,
+            AsyncWebSocketClient* client,
+            AwsEventType type,
+            void* arg,
+            uint8_t* data,
+            size_t len
+        )
+        {
+            onEvent(server, client, type, arg, data, len);
+        }
+
+    );
 
     server.addHandler(&webSocket_);
 
@@ -21,12 +34,26 @@ void WebSocketManager::onEvent(
     switch (type)
     {
     case WS_EVT_CONNECT:
-        LOG_INFO("Client connected.");
-        break;
+        {
+            LOG_INFO("Client connected.");
+        
+            newClient_ = client;
+            
+            break;
+        }
 
     case WS_EVT_DISCONNECT:
-        LOG_INFO("Client disconnected.");
-        break;
+        {
+            LOG_INFO("Client disconnected.");
+        
+            if (newClient_ == client)
+                {
+                    newClient_ = nullptr;
+                }
+
+            break;
+        }
+        
 
     case WS_EVT_DATA:
     {
