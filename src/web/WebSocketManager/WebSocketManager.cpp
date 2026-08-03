@@ -81,7 +81,7 @@ void WebSocketManager::broadcast(const char *message)
     webSocket_.textAll(message);
 }
 
-void send(AsyncWebSocketClient& client, const char* message)
+void WebSocketManager::send(AsyncWebSocketClient& client, const char* message)
 {
     client.text(message);
 }
