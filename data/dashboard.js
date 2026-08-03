@@ -15,12 +15,18 @@ const chart = new Chart(ctx, {
         {
             label: "Temperature",
             data: [],
-            yAxisID: "temperature"
+            yAxisID: "temperature",
+
+            borderColor: "#e53935",
+            backgroundColor: "#e53935",
         },
         {
             label: "Humidity",
             data: [],
-            yAxisID: "humidity"
+            yAxisID: "humidity",
+
+            borderColor: "#1e88e5",
+            backgroundColor: "#1e88e5",
         }
     ]
     },
@@ -32,7 +38,10 @@ const chart = new Chart(ctx, {
         scales: {
             temperature: {
                 type: "linear",
-                position: "left"
+                position: "left",
+
+                min: 0,
+                max: 50,
             },
             humidity: {
                 type: "linear",
