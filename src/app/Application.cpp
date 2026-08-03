@@ -52,6 +52,13 @@ void Application::update()
         dashboardService_.publishMeasurement(sensorService_.latestMeasurement());
     };
 
+    if (webSocketManager_.hasNewClient())
+    {
+        dashboardService_.publishHistory(*webSocketManager_.newClient());
+
+        webSocketManager_.clearNewClient();
+    }
+
     sensorService_.clearNewMeasurement();
 }
 
