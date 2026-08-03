@@ -1,4 +1,4 @@
-const RING_BUFFER_SIZE = 60;
+const RING_BUFFER_SIZE = 864;
 
 // Chart
 const ctx = 
