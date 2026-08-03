@@ -4,17 +4,6 @@ DashboardService::DashboardService(WebSocketManager& socket) : webSocketManager_
 {
 }
 
-void DashboardService::publishMeasurement(const SensorData& data)
-{
-    history_.push(data);
-
-    char buffer[128];
-
-    serializeMeasurement(data, buffer, sizeof(buffer));
-
-    webSocketManager_.broadcast(buffer);
-}
-
 void DashboardService::serializeMeasurement(const SensorData& data, char* buffer, std::size_t bufferSize) const
 {
     JsonDocument json;
@@ -28,6 +17,17 @@ void DashboardService::serializeMeasurement(const SensorData& data, char* buffer
     values["temperature"] = data.temperatureCelcius;
 
     serializeJson(json, buffer, bufferSize);
+}
+
+void DashboardService::publishMeasurement(const SensorData& data)
+{
+    history_.push(data);
+
+    char buffer[128];
+
+    serializeMeasurement(data, buffer, sizeof(buffer));
+
+    webSocketManager_.broadcast(buffer);
 }
 
 void DashboardService::publishHistory(AsyncWebSocketClient& client)

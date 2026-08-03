@@ -21,4 +21,6 @@ private:
     RingBuffer<SensorData, Config::RING_BUFFER_SIZE> history_;
     
     void serializeMeasurement(const SensorData& data, char* buffer, std::size_t bufferSize) const;
+
+    
 };
