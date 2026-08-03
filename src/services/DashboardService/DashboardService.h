@@ -12,9 +12,10 @@ public:
     explicit DashboardService(WebSocketManager& socket);
 
     void publishMeasurement(const SensorData& data);
-
     
-    private:
+    void publishHistory(AsyncWebSocketClient& client);
+    
+private:
     WebSocketManager& webSocketManager_;
     
     RingBuffer<SensorData, Config::RING_BUFFER_SIZE> history_;

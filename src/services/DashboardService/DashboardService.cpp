@@ -29,3 +29,17 @@ void DashboardService::serializeMeasurement(const SensorData& data, char* buffer
 
     serializeJson(json, buffer, bufferSize);
 }
+
+void DashboardService::publishHistory(AsyncWebSocketClient& client)
+{
+    char buffer[128];
+
+    for (size_t i = 0; i < history_.size(); i++)
+    {
+        const auto& measurement = history_.at(i);
+
+        serializeMeasurement(measurement, buffer, sizeof(buffer));
+        
+        webSocketManager_.send(client, buffer);
+    }
+}
