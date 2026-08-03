@@ -1,17 +1,22 @@
 #include "DashboardService.h"
 
-
-DashboardService::DashboardService(WebSocketManager& socket)
-    : webSocketManager_(socket)
+DashboardService::DashboardService(WebSocketManager& socket) : webSocketManager_(socket)
 {
 }
-
 
 void DashboardService::publishMeasurement(const SensorData& data)
 {
     history_.push(data);
 
-    
+    char buffer[128];
+
+    serializeMeasurement(data, buffer, sizeof(buffer));
+
+    webSocketManager_.broadcast(buffer);
+}
+
+void DashboardService::serializeMeasurement(const SensorData& data, char* buffer, std::size_t bufferSize) const
+{
     JsonDocument json;
 
     json["type"] = "sensor";
@@ -22,10 +27,5 @@ void DashboardService::publishMeasurement(const SensorData& data)
     values["humidity"] = data.humidityPercent;
     values["temperature"] = data.temperatureCelcius;
 
-    
-    char buffer[128];
-
-    serializeJson(json, buffer, sizeof(buffer));
-
-    webSocketManager_.broadcast(buffer);
+    serializeJson(json, buffer, bufferSize);
 }
