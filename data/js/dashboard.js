@@ -1,30 +1,23 @@
 import { CurrentMeasurements } from "./ui/current-measurements.js";
 import { ChartManager } from "./ui/chart-manager.js";
+import { WebSocketClient } from "./web/websocket-client.js";
 
+const socket = new WebSocketClient();
 const currentMeasurements = new CurrentMeasurements();
 const chartManager = new ChartManager();
 
-const socket = new WebSocket(
-    `ws://${location.host}/ws`
-);
 
-
-socket.onopen = () => {
+socket.onopen(() => {
     status.textContent = "Connected";
-};
+});
 
-socket.onclose = () => {
+socket.onclose(() => {
     status.textContent = "Disconnected";
-};
+});
 
 
-socket.onmessage = (event) => {
-    const message = JSON.parse(event.data);
+socket.onMeasurement((measurement) => {
+    currentMeasurements.updateCurrentMeasurement(measurement);
 
-    if (message.type === "sensor"){
-
-        currentMeasurements.updateCurrentMeasurement(message.data);
-
-        chartManager.addMeasurement(message.data);
-    }
-};
+    chartManager.addMeasurement(measurement);
+});
