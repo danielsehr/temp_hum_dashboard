@@ -1,4 +1,4 @@
-import { CurrentMeasurements } from "./ui/live-values.js";
+import { CurrentMeasurements } from "./ui/current-measurements.js";
 import { ChartManager } from "./ui/chart-manager.js";
 
 const currentMeasurements = new CurrentMeasurements();
