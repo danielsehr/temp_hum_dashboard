@@ -1,4 +1,6 @@
-class ChartManager {
+export class ChartManager {
+    static BUFFER_SIZE = 864;
+
     constructor() {
         this.ctx =
             document
@@ -58,14 +60,13 @@ class ChartManager {
         });
     }
 
-    static BUFFER_SIZE = 864;
 
     #createTimestamp() {
         return new Date().toLocaleTimeString();
     }
 
     #appendMeasurement(data) {
-        this.chart.data.labels.push(this.createTimestamp());
+        this.chart.data.labels.push(this.#createTimestamp());
         this.chart.data.datasets[0].data.push(data.temperature);
         this.chart.data.datasets[1].data.push(data.humidity);
     }
@@ -80,8 +81,8 @@ class ChartManager {
     }
 
     addMeasurement(data) {
-        this.appendMeasurement(data);
-        this.trimBuffer();
+        this.#appendMeasurement(data);
+        this.#trimBuffer();
         this.chart.update();
     }
 }

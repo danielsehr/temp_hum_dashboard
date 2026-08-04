@@ -1,62 +1,6 @@
-const RING_BUFFER_SIZE = 864;
+import { ChartManager } from "./ui/chart-manager.js";
 
-// Chart
-const ctx = 
-    document
-        .getElementById("chart")
-        .getContext("2d");
-
-const chart = new Chart(ctx, {
-    type: "line",
-
-    data: {
-        labels: [],
-        datasets: [
-        {
-            label: "Temperature",
-            data: [],
-            yAxisID: "temperature",
-
-            borderColor: "#e53935",
-            backgroundColor: "#e53935",
-        },
-        {
-            label: "Humidity",
-            data: [],
-            yAxisID: "humidity",
-
-            borderColor: "#1e88e5",
-            backgroundColor: "#1e88e5",
-        }
-    ]
-    },
-
-    options: {
-        animation: false,
-        responsive: true,
-
-        scales: {
-            temperature: {
-                type: "linear",
-                position: "left",
-
-                min: 0,
-                max: 50,
-            },
-            humidity: {
-                type: "linear",
-                position: "right",
-
-                min: 0,
-                max: 100,
-
-                grid: {
-                    drawOnChartArea: false
-                }
-            }
-        }
-    }
-});
+const chartManager = new ChartManager();
 
 // Rest
 const status = document.getElementById("status");
@@ -84,7 +28,7 @@ socket.onmessage = (event) => {
 
         updateLiveValues(message);
 
-        updateChart(message);
+        chartManager.addMeasurement(message.data);
     }
 };
 
@@ -95,27 +39,4 @@ function updateLiveValues(message){
 
     humidity.textContent =
         `${message.data.humidity.toFixed(1)} %`;
-}
-
-function updateChart(message){
-    chart.data.labels.push(
-            new Date().toLocaleTimeString()
-        );
-
-        chart.data.datasets[0].data.push(
-            message.data.temperature
-        );
-
-        chart.data.datasets[1].data.push(
-            message.data.humidity
-        );
-
-        if (chart.data.labels.length > RING_BUFFER_SIZE){
-            chart.data.labels.shift();
-            
-            chart.data.datasets[0].data.shift();
-            chart.data.datasets[1].data.shift();
-        }
-
-        chart.update();
 }
