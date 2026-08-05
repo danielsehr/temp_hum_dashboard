@@ -48,3 +48,8 @@ void StorageManager::serializeMeasurementCsv(File& file, const SensorData& measu
     
     file.println(measurement.valid);
 }
+
+File StorageManager::historyFile()
+{
+    return LittleFS.open(HISTORY_FILE, FILE_READ);
+}

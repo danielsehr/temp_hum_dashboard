@@ -14,10 +14,12 @@ public:
 
     bool appendMeasurement(const SensorData& measurement);
 
+    File historyFile();
+
 private:
     void initializeFileSystem();
 
     void serializeMeasurementCsv(File& file, const SensorData& measurement);
 
-    static constexpr char HISTORY_FILE[] = "/experiments/exp001.csv";
+    static constexpr const char* HISTORY_FILE = "/experiments/exp001.csv";
 };
