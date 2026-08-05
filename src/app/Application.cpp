@@ -3,7 +3,6 @@
 #include "utils/logger/Logger.h"
 
 #include <LittleFS.h>
-#include <WiFi.h>
 
 
 // public
@@ -18,16 +17,16 @@ Application::Application()
 void Application::begin()
 {
     Logger::begin();
+    
+    initializeFileSystem();
+    
+    networkManager_.begin();
+    
+    webServer_.begin();
+    
+    sensorService_.begin();
 
     LOG_INFO("Application started.");
-
-    initializeFileSystem();
-
-    initializeAP();
-
-    webServer_.begin();
-
-    sensorService_.begin();
 }
 
 
@@ -60,24 +59,4 @@ void Application::update()
     }
 
     sensorService_.clearNewMeasurement();
-}
-
-
-// private
-void Application::initializeAP()
-{
-    LOG_INFO("Start access point...");
-
-
-    WiFi.mode(WIFI_AP);
-
-    if (!WiFi.softAP(Config::AP_NAME, Config::AP_PASSWORD))
-    {
-        LOG_ERROR("Failed to start AP.");
-        return;
-    }
-
-
-    LOG_INFO("AP started.");
-    LOG_INFO(WiFi.softAPIP().toString().c_str());
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "network/NetworkManager.h"
 #include "web/HTTP/WebServer.h"
 #include "services/SensorService/SensorService.h"
 #include "services/DashboardService/DashboardService.h"
@@ -17,6 +18,8 @@ public:
     void update();
 
 private:
+    NetworkManager networkManager_; 
+
     WebSocketManager webSocketManager_;
     
     WebServer webServer_;
@@ -25,5 +28,5 @@ private:
 
     DashboardService dashboardService_;
 
-    void initializeAP();
+    // void initializeAP();
 };
