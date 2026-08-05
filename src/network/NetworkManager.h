@@ -1,3 +1,5 @@
+#pragma once
+
 #include "config/Config.h"
 #include "utils/logger/Logger.h"
 
