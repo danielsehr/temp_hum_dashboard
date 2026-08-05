@@ -4,8 +4,10 @@
 #include <LittleFS.h>
 
 
-WebServer::WebServer(WebSocketManager& webSocket)
-    : webSocketManager_(webSocket)
+WebServer::WebServer(WebSocketManager& webSocket, StorageManager& storageManager)
+    : 
+    webSocketManager_(webSocket),
+    storageManager_(storageManager)
 {
 }
 
