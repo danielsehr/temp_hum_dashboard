@@ -4,7 +4,7 @@
 
 Application::Application()
     : 
-    webServer_(webSocketManager_),
+    webServer_(webSocketManager_, storageManager_),
     dashboardService_(webSocketManager_)
 {
 }
