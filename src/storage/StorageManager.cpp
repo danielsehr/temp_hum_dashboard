@@ -1,8 +1,4 @@
 #include "StorageManager.h"
-#include "utils/logger/Logger.h"
-
-#include <LittleFS.h>
-
 
 void StorageManager::begin()
 {
@@ -18,4 +14,37 @@ void StorageManager::initializeFileSystem()
     }
 
     LOG_INFO("LittleFS mounted.");
+}
+
+bool StorageManager::appendMeasurement(const SensorData& measurement)
+{
+    File file = LittleFS.open(HISTORY_FILE, FILE_APPEND);
+
+    if (!file)
+    {
+        LOG_ERROR("Failed to open csv file.");
+        return false;
+    }
+
+    serializeMeasurementCsv(file, measurement);
+
+    file.close();
+
+    LOG_INFO("Wrote measurement to csv.");
+
+    return true;
+}
+
+void StorageManager::serializeMeasurementCsv(File& file, const SensorData& measurement)
+{
+    file.print(measurement.timestamp);
+    file.print(',');
+    
+    file.print(measurement.temperatureCelcius);
+    file.print(',');
+    
+    file.print(measurement.humidityPercent);
+    file.print(',');
+    
+    file.println(measurement.valid);
 }
