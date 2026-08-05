@@ -22,4 +22,6 @@ private:
     StorageManager& storageManager_;
 
     void registerRoutes();
+
+    void handleDownloadCsv(AsyncWebServerRequest* request);
 };

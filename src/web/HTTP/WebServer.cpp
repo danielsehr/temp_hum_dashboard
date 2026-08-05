@@ -11,7 +11,6 @@ WebServer::WebServer(WebSocketManager& webSocket, StorageManager& storageManager
 {
 }
 
-
 void WebServer::begin()
 {
     registerRoutes();
@@ -25,11 +24,32 @@ void WebServer::begin()
     LOG_INFO("HTTP server started.");
 }
 
-
 void WebServer::registerRoutes()
 {
-    server_.on("/", HTTP_GET, [](AsyncWebServerRequest* request)
-    {
-        request->send(LittleFS, "/index.html", "text/html");
-    });
+    server_.on("/", HTTP_GET, 
+        [](AsyncWebServerRequest* request)
+        {
+            request->send(LittleFS, "/index.html", "text/html");
+        });
+
+    server_.on("/experiments/exp001.csv", HTTP_GET,
+        [this](AsyncWebServerRequest* request)
+        {
+            handleDownloadCsv(request);
+        }
+);
 }
+
+void WebServer::handleDownloadCsv(AsyncWebServerRequest* request)
+{
+    File file = storageManager_.historyFile();
+
+    if (!file)
+    {
+        request->send(404, "History file not found.", "text/plain");
+        return;
+    }
+
+    request->send(file, "/experiments/exp001.csv", "text/csv", true);
+}
+
