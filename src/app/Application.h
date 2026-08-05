@@ -24,8 +24,8 @@ private:
     WebSocketManager webSocketManager_;
     
     WebServer webServer_;
-
+    
     SensorService sensorService_;
-
-    DashboardService dashboardService_;
+    
+    DashboardService dashboardService_;  
 };
