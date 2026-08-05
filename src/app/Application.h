@@ -1,5 +1,6 @@
 #pragma once
 
+#include "storage/StorageManager.h"
 #include "network/NetworkManager.h"
 #include "web/HTTP/WebServer.h"
 #include "services/SensorService/SensorService.h"
@@ -13,11 +14,11 @@ public:
 
     void begin();
     
-    void initializeFileSystem();
-    
     void update();
 
 private:
+    StorageManager storageManager_;
+
     NetworkManager networkManager_; 
 
     WebSocketManager webSocketManager_;
@@ -27,6 +28,4 @@ private:
     SensorService sensorService_;
 
     DashboardService dashboardService_;
-
-    // void initializeAP();
 };
