@@ -46,6 +46,7 @@ void WebServer::handleDownloadCsv(AsyncWebServerRequest* request)
 
     if (!file)
     {
+        LOG_ERROR("Failed to open history CSV file.");
         request->send(404, "text/plain", "History file not found.");
         return;
     }
