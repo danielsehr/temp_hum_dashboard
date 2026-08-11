@@ -6,44 +6,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photobioreactor Dashboard</title>
+
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 
 <body>
-    <h1>
-        ESP32 Environment Dashboard
-    </h1>
-    <div>
-        <h2>Temperature</h2>
-        <p id="temperature">
-            -- °C
-        </p>
-    </div>
+    <main class="dashboard">
+        <header class="dashboard-header">
+            <h1>ESP32 Environment Dashboard</h1>
+        </header>
+        
 
-    <div>
-        <h2>Humidity</h2>
-        <p id="humidity">
-            -- %
-        </p>
-    </div>
+        <section>
+            <div class="measurement-card">
+                <div class="measurement">
+                    <h2>Temperature</h2>
+                    <p id="temperature">-- °C</p>
+                </div>
 
-    <div>
-        Connection:
-        <span id="status">
-            Disconnected
-        </span>
-    </div>
+                <div class="measurement">
+                    <h2>Humidity</h2>
+                    <p id="humidity">-- %</p>
+                </div>
+            </div>
+        </section>
+        
 
-    <div>
-        <h2>Chart</h2>
-    </div>
+        <div class="connection-status">
+            <span>Connection:</span>
+            <span id="status">Disconnected</span>
+        </div>
+
+        <section class="chart-section">
+            <h2>Chart</h2>
+
+            <div class="chart-container">
+                <canvas id="chart"></canvas>
+            </div>
+        </section>
+        
+        <section class="actions">
+            <button id="downloadCsv">Download CSV</button>
+        </section>
     
-    <canvas id="chart"></canvas>
-
-    <div>
-        <button id="downloadCsv">Download CSV</button>
-    </div>
-
-
+    </main>
+    
+    
     <script src="js/ui/chart.min.js"></script>
     <script type="module" src="js/dashboard.js"></script>
 
