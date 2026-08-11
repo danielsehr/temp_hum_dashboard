@@ -46,7 +46,7 @@ void WebServer::handleDownloadCsv(AsyncWebServerRequest* request)
 
     if (!file)
     {
-        request->send(404, "History file not found.", "text/plain");
+        request->send(404, "text/plain", "History file not found.");
         return;
     }
 
