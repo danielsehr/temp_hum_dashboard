@@ -21,3 +21,10 @@ socket.onMeasurement((measurement) => {
 
     chartManager.addMeasurement(measurement);
 });
+
+
+document
+    .getElementById("downloadCsv")
+    .addEventListener("click", () => {
+        window.location.href = "/experiments/exp001.csv";
+    });
