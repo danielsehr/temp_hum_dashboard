@@ -1,4 +1,6 @@
 #include "StorageManager.h"
+#include "config/Config.h"
+
 
 void StorageManager::begin()
 {
@@ -27,12 +29,19 @@ void StorageManager::initializeFileSystem()
 
 bool StorageManager::appendMeasurement(const SensorData& measurement)
 {
-    File file = LittleFS.open(HISTORY_FILE, FILE_APPEND);
+    const bool fileExists = LittleFS.exists(Config::HISTORY_FILE);
+
+    File file = LittleFS.open(Config::HISTORY_FILE, FILE_APPEND);
 
     if (!file)
     {
         LOG_ERROR("Failed to open csv file.");
         return false;
+    }
+
+    if (!fileExists)
+    {
+        createCsvHeader(file);
     }
 
     serializeMeasurementCsv(file, measurement);
@@ -42,6 +51,11 @@ bool StorageManager::appendMeasurement(const SensorData& measurement)
     LOG_INFO("Wrote measurement to csv.");
 
     return true;
+}
+
+void StorageManager::createCsvHeader(File& file)
+{
+    file.println("timestamp, temperature_celcius, humidity_percent, valid");
 }
 
 void StorageManager::serializeMeasurementCsv(File& file, const SensorData& measurement)
@@ -60,5 +74,5 @@ void StorageManager::serializeMeasurementCsv(File& file, const SensorData& measu
 
 File StorageManager::historyFile()
 {
-    return LittleFS.open(HISTORY_FILE, FILE_READ);
+    return LittleFS.open(Config::HISTORY_FILE, FILE_READ);
 }
