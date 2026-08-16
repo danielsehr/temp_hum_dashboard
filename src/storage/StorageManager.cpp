@@ -13,6 +13,15 @@ void StorageManager::initializeFileSystem()
         return;
     }
 
+    if (!LittleFS.exists("/experiments"))
+    {
+        if (!LittleFS.mkdir("/experiments"))
+        {
+            LOG_ERROR("Failed to create experiments directory.");
+            return;
+        }
+    }
+
     LOG_INFO("LittleFS mounted.");
 }
 
