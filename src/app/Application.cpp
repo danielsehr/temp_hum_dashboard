@@ -30,7 +30,11 @@ void Application::update()
 
     if (sensorService_.hasNewMeasurement())
     {
-        dashboardService_.publishMeasurement(sensorService_.latestMeasurement());
+        const SensorData& measurement = sensorService_.latestMeasurement();
+
+        dashboardService_.publishMeasurement(measurement);
+
+        storageManager_.appendMeasurement(measurement);
     }
 
     if (webSocketManager_.hasNewClient())
