@@ -1,6 +1,28 @@
 # include "Logger.h"
 
+#include <cstdarg>
+#include <cstdio>
 # include <Arduino.h>
+
+
+namespace
+{
+    constexpr std::size_t LOG_BUFFER_SIZE = 128;
+
+    void formatMessage(
+        char* buffer,
+        std::size_t bufferSize,
+        const char* format,
+        va_list args)
+    {
+        vsnprintf(
+            buffer,
+            bufferSize,
+            format,
+            args
+        );
+    }
+}
 
 
 void Logger::begin()
@@ -18,9 +40,7 @@ void Logger::info(const char* message)
 
 void Logger::info(const SensorData& data)
 {
-    Serial.print("[INFO] ");
-    
-    char buffer[128];
+    char buffer[LOG_BUFFER_SIZE];
 
     snprintf(
         buffer,
@@ -35,7 +55,27 @@ void Logger::info(const SensorData& data)
         data.valid ? "true" : "false"
     );
 
-    Serial.println(buffer);
+    info(buffer);
+}
+
+
+void Logger::infof(const char* format, ...)
+{
+    char buffer[LOG_BUFFER_SIZE];
+
+    va_list args;
+    va_start(args, format);
+
+    formatMessage(
+        buffer,
+        sizeof(buffer),
+        format,
+        args
+    );
+
+    va_end(args);
+
+    info(buffer);
 }
 
 
@@ -50,4 +90,23 @@ void Logger::error(const char* message)
 {
     Serial.print("[ERROR] ");
     Serial.println(message);
+}
+
+void Logger::errorf(const char* format, ...)
+{
+    char buffer[LOG_BUFFER_SIZE];
+
+    va_list args;
+    va_start(args, format);
+
+    formatMessage(
+        buffer,
+        sizeof(buffer),
+        format,
+        args
+    );
+
+    va_end(args);
+
+    error(buffer);
 }
