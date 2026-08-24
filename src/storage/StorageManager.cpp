@@ -27,11 +27,42 @@ void StorageManager::initializeFileSystem()
     LOG_INFO("LittleFS mounted.");
 }
 
-bool StorageManager::appendMeasurement(const SensorData& measurement)
+bool StorageManager::createExperiment(const Experiment& experiment) 
 {
-    const bool fileExists = LittleFS.exists(Config::HISTORY_FILE);
+    char path[Config::CSV_PATH_MAX];
 
-    File file = LittleFS.open(Config::HISTORY_FILE, FILE_APPEND);
+    if(!createCsvPath(experiment, path))
+    {
+        return false;
+    }
+
+    File file = LittleFS.open(path, FILE_WRITE);
+
+    if (!file)
+    {
+        // LOG_ERROR("Could not open csv file: %s", path);
+        return false;
+    }
+
+    file.println("timestamp, temperature_celcius, humidity_percent, valid");
+
+    file.close();
+
+    return true;
+}
+
+bool StorageManager::appendMeasurement(
+    const Experiment experiment, 
+    const SensorData& measurement)
+{
+    char path[Config::CSV_PATH_MAX];
+
+    if(!createCsvPath(experiment, path))
+    {
+        return false;
+    }
+
+    File file = LittleFS.open(path, FILE_APPEND);
 
     if (!file)
     {
@@ -39,9 +70,9 @@ bool StorageManager::appendMeasurement(const SensorData& measurement)
         return false;
     }
 
-    if (!fileExists)
+    if (file.size() == 0)
     {
-        createCsvHeader(file);
+        file.println("timestamp, temperature_celcius, humidity_percent, valid");
     }
 
     serializeMeasurementCsv(file, measurement);
@@ -53,10 +84,75 @@ bool StorageManager::appendMeasurement(const SensorData& measurement)
     return true;
 }
 
-void StorageManager::createCsvHeader(File& file)
+bool StorageManager::createCsvPath(const Experiment& experiment, char* buffer) const
 {
-    file.println("timestamp, temperature_celcius, humidity_percent, valid");
+    const int written = snprintf(
+        buffer,
+        Config::CSV_PATH_MAX,
+        Config::HISTORY_FILE_TEMPLATE,
+        static_cast<unsigned long>(experiment.id)
+    );
+
+    if (written < 0 || static_cast<size_t>(written) >= Config::CSV_PATH_MAX)
+    {
+        LOG_ERROR("Failed to create CSV path.");
+        return false;
+    }
+
+    return true;
 }
+
+
+uint32_t StorageManager::nextExperimentId() const 
+{
+    uint32_t id = 1;
+    
+    char path[Config::CSV_PATH_MAX];
+
+    while (true)
+    {
+        Experiment experiment;
+        experiment.id = id;
+
+        if(!createCsvPath(experiment, path))
+        {
+            return 0;
+        }
+
+        if (!LittleFS.exists(path))
+        {
+            return id;
+        }
+
+        ++id;
+    }
+}
+
+
+void StorageManager::listDirectory(const char* path)
+{
+    File directory = LittleFS.open(path);
+
+    if (!directory || !directory.isDirectory())
+    {
+        LOG_ERROR("Failed to open directory: %s", path);
+        return;
+    }
+
+    File file = directory.openNextFile();
+
+    while (file)
+    {
+        LOG_INFO(
+            "%s (%lu bytes)",
+            file.name(),
+            static_cast<unsigned long>(file.size())
+        );
+
+        file = directory.openNextFile();
+    }
+}
+
 
 void StorageManager::serializeMeasurementCsv(File& file, const SensorData& measurement)
 {
@@ -70,9 +166,11 @@ void StorageManager::serializeMeasurementCsv(File& file, const SensorData& measu
     file.print(',');
     
     file.println(measurement.valid);
-}
 
-File StorageManager::historyFile()
-{
-    return LittleFS.open(Config::HISTORY_FILE, FILE_READ);
+    // file.printf(
+    //     "%lu,%.2f,%.2f\n",
+    //     static_cast<unsigned long>(measurement.timestamp),
+    //     measurement.temperatureCelcius,
+    //     measurement.humidityPercent
+    // );
 }

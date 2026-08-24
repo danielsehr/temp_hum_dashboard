@@ -1,8 +1,9 @@
 #pragma once
 
-#include "StorageManager.h"
 #include "utils/logger/Logger.h"
+#include "StorageManager.h"
 #include "state/SensorData.h"
+#include "state/Experiment.h"
 
 #include <LittleFS.h>
 
@@ -12,14 +13,20 @@ class StorageManager
 public:
     void begin();
 
-    bool appendMeasurement(const SensorData& measurement);
+    bool createExperiment(const Experiment& experiment);
 
-    File historyFile();
+    bool appendMeasurement(const Experiment experiment, const SensorData& measurement);
+
+    bool finishExperiment(const Experiment& experiment);
+
+    bool createCsvPath(const Experiment& experiment, char* buffer) const;
+    
+    uint32_t nextExperimentId() const;
+
+    void listDirectory(const char* path);
 
 private:
     void initializeFileSystem();
 
     void serializeMeasurementCsv(File& file, const SensorData& measurement);
-
-    static constexpr const char* HISTORY_FILE = "/experiments/exp001.csv";
 };
