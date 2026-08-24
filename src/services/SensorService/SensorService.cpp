@@ -39,7 +39,7 @@ void SensorService::update()
 
 
     LOG_INFO("Sensor updated.\n");
-    LOG_INFO(latest_);
+    Logger::info(latest_);
 }
 
 
