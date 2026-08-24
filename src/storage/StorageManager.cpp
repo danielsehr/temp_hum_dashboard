@@ -1,4 +1,4 @@
-#include <csdtio>
+#include <cstdio>
 
 #include "StorageManager.h"
 #include "config/Config.h"
@@ -177,7 +177,7 @@ std::size_t StorageManager::listExperimentIds(uint32_t* ids, std::size_t capacit
 
         unsigned long id;
 
-        if (sscanf(name, "/experiments/exp%lu.csv", &id) == 1)
+        if (sscanf(name, "exp%lu.csv", &id) == 1)
         {
             ids[count] = static_cast<uint32_t>(id);
             ++count;
