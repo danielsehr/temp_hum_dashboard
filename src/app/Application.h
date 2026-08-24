@@ -5,6 +5,7 @@
 #include "web/HTTP/WebServer.h"
 #include "services/SensorService/SensorService.h"
 #include "services/DashboardService/DashboardService.h"
+#include "services/ExperimentService/ExperimentService.h"
 
 
 class Application
@@ -23,9 +24,11 @@ private:
 
     WebSocketManager webSocketManager_;
     
-    WebServer webServer_;
-    
     SensorService sensorService_;
     
-    DashboardService dashboardService_;  
+    ExperimentService experimentService_;
+    
+    DashboardService dashboardService_;
+    
+    WebServer webServer_;
 };

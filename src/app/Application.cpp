@@ -4,8 +4,13 @@
 
 Application::Application()
     : 
-    webServer_(webSocketManager_, storageManager_),
-    dashboardService_(webSocketManager_)
+    storageManager_(),
+    networkManager_(),
+    webSocketManager_(),
+    sensorService_(),
+    experimentService_(storageManager_),
+    dashboardService_(webSocketManager_),
+    webServer_(webSocketManager_, storageManager_, experimentService_)
 {
 }
 
@@ -21,7 +26,11 @@ void Application::begin()
     
     sensorService_.begin();
 
-    LOG_INFO("Application started.");
+    LOG_INFO("Application started. Printing filesystem:");
+
+    storageManager_.listDirectory("/experiments");
+
+    LOG_INFO("Done.");
 }
 
 void Application::update()
@@ -34,7 +43,7 @@ void Application::update()
 
         dashboardService_.publishMeasurement(measurement);
 
-        storageManager_.appendMeasurement(measurement);
+        experimentService_.record(measurement);
     }
 
     if (webSocketManager_.hasNewClient())
