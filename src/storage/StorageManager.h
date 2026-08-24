@@ -25,6 +25,8 @@ public:
 
     void listDirectory(const char* path);
 
+    std::size_t listExperimentIds(uint32_t* ids, std::size_t capacity) const;
+
 private:
     void initializeFileSystem();
 

@@ -1,3 +1,5 @@
+#include <csdtio>
+
 #include "StorageManager.h"
 #include "config/Config.h"
 
@@ -151,6 +153,40 @@ void StorageManager::listDirectory(const char* path)
 
         file = directory.openNextFile();
     }
+}
+
+
+std::size_t StorageManager::listExperimentIds(uint32_t* ids, std::size_t capacity) const
+{
+    File directory = LittleFS.open("/experiments");
+
+    if(!directory || !directory.isDirectory())
+    {
+        LOG_ERROR("Failed to open experiments directory");
+        return 0;
+    }
+
+    
+    std::size_t count = 0;
+
+    File file = directory.openNextFile();
+
+    while (file && count < capacity)
+    {
+        const char* name = file.name();
+
+        unsigned long id;
+
+        if (sscanf(name, "/experiments/exp%lu.csv", &id) == 1)
+        {
+            ids[count] = static_cast<uint32_t>(id);
+            ++count;
+        }
+
+        file = directory.openNextFile();
+    }
+
+    return count;
 }
 
 
