@@ -14,4 +14,7 @@ namespace Config
 
     constexpr const char* HISTORY_FILE_TEMPLATE = "/experiments/exp%03lu.csv";
     constexpr const std::size_t CSV_PATH_MAX = 32;
+
+    constexpr std::size_t MAX_EXPERIMENTS = 32;
+    constexpr std::size_t JSON_CAPACITY = 1024;
 } 
