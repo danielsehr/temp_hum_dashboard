@@ -180,31 +180,3 @@ void WebServer::handleDownloadCsv(AsyncWebServerRequest* request)
 
     request->send(file, path, "text/csv", true);
 }
-
-
-
-// void WebServer::handleDownloadCsv(AsyncWebServerRequest* request)
-// {
-//     const Experiment& experiment = experimentService_.currentExperiment();
-
-//     char path[Config::CSV_PATH_MAX];
-
-//     if(!storageManager_.createCsvPath(experiment, path))
-//     {
-//         LOG_ERROR("Failed to generate experiment CSV path.");
-//         request->send(500, "text/plain", "Failed to generate file path.");
-//         return;
-//     }
-    
-//     File file = LittleFS.open(path, FILE_READ);
-
-//     if (!file)
-//     {
-//         LOG_ERROR("Failed to open experiment CSV file:");
-//         LOG_ERROR(path);
-//         request->send(404, "text/plain", "Experiment file not found.");
-//         return;
-//     }
-
-//     request->send(file, path, "text/csv", true);
-// }
