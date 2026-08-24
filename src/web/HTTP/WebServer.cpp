@@ -1,6 +1,7 @@
 #include "WebServer.h"
 #include "utils/logger/Logger.h"
 
+#include <ArduinoJson.h>
 #include <LittleFS.h>
 
 
@@ -59,6 +60,12 @@ void WebServer::registerRoutes()
         {
             handleDownloadCsv(request);
         });
+
+    server_.on("/api/experiments", HTTP_GET,
+        [this](AsyncWebServerRequest* request)
+        {
+            handleListExperiments(request);
+        });
 }
 
 
@@ -83,7 +90,7 @@ void WebServer::handleStopExperiment(AsyncWebServerRequest* request)
 void WebServer::handleExperimentStatus(AsyncWebServerRequest* request)
 {
     const bool recording = experimentService_.isRecording();
-
+    
     if (recording)
     {
         request->send(200, "application/json", R"({"recording":true})");
@@ -94,25 +101,79 @@ void WebServer::handleExperimentStatus(AsyncWebServerRequest* request)
     }
 }
 
+void WebServer::handleListExperiments(AsyncWebServerRequest* request)
+{
+    uint32_t ids[Config::MAX_EXPERIMENTS];
+    
+    const std::size_t count = storageManager_.listExperimentIds(ids, Config::MAX_EXPERIMENTS);
+
+    JsonDocument json;
+    JsonArray experiments = json.to<JsonArray>();
+    
+    for (std::size_t i = 0; i < count; i++)
+    {
+        JsonObject experiment = experiments.add<JsonObject>();
+
+        experiment["id"] = ids[i];
+    }
+    
+    char response[Config::JSON_CAPACITY];
+
+    const std::size_t length = serializeJson(
+        json,
+        response,
+        sizeof(response)
+    );
+
+    if (length == 0)
+    {
+        LOG_ERROR("Failed to serialize experiment list");
+        request->send(500, "text/plain", "Failed to serialize experiment list.");
+        return;
+    }
+
+    request->send(200, "application/json", response);
+    
+}
+
 void WebServer::handleDownloadCsv(AsyncWebServerRequest* request)
 {
-    const Experiment& experiment = experimentService_.currentExperiment();
+    if (!request->hasParam("id"))
+    {
+        request->send(400, "text/plain", "Missing experiment ID.");
+        return;
+    }
+
+    const char* idString = request->getParam("id")->value().c_str();
+
+    char* end = nullptr;
+
+    const unsigned long id = strtoul(idString, &end, 10);
+    
+    if (*idString == '\0' || *end != '\0')
+    {
+        request->send(400, "text/plain", "Invalid experiment ID");
+        return;
+    }
+
+
+    Experiment experiment{};
+    experiment.id = static_cast<uint32_t>(id);
 
     char path[Config::CSV_PATH_MAX];
-
+    
     if(!storageManager_.createCsvPath(experiment, path))
     {
         LOG_ERROR("Failed to generate experiment CSV path.");
         request->send(500, "text/plain", "Failed to generate file path.");
         return;
     }
-    
+
     File file = LittleFS.open(path, FILE_READ);
 
     if (!file)
     {
-        LOG_ERROR("Failed to open experiment CSV file:");
-        LOG_ERROR(path);
+        LOG_ERROR("Experiment file not found: %s", path);
         request->send(404, "text/plain", "Experiment file not found.");
         return;
     }
@@ -120,3 +181,30 @@ void WebServer::handleDownloadCsv(AsyncWebServerRequest* request)
     request->send(file, path, "text/csv", true);
 }
 
+
+
+// void WebServer::handleDownloadCsv(AsyncWebServerRequest* request)
+// {
+//     const Experiment& experiment = experimentService_.currentExperiment();
+
+//     char path[Config::CSV_PATH_MAX];
+
+//     if(!storageManager_.createCsvPath(experiment, path))
+//     {
+//         LOG_ERROR("Failed to generate experiment CSV path.");
+//         request->send(500, "text/plain", "Failed to generate file path.");
+//         return;
+//     }
+    
+//     File file = LittleFS.open(path, FILE_READ);
+
+//     if (!file)
+//     {
+//         LOG_ERROR("Failed to open experiment CSV file:");
+//         LOG_ERROR(path);
+//         request->send(404, "text/plain", "Experiment file not found.");
+//         return;
+//     }
+
+//     request->send(file, path, "text/csv", true);
+// }
