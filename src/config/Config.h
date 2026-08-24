@@ -12,5 +12,6 @@ namespace Config
     constexpr uint32_t SENSOR_UPDATE_MS = 5000;
     constexpr std::size_t RING_BUFFER_SIZE = 864;
 
-    static constexpr const char* HISTORY_FILE = "/experiments/exp001.csv";
+    constexpr const char* HISTORY_FILE_TEMPLATE = "/experiments/exp%03lu.csv";
+    constexpr const std::size_t CSV_PATH_MAX = 32;
 } 
