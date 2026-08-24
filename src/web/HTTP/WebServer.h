@@ -33,6 +33,7 @@ private:
     void handleStartExperiment(AsyncWebServerRequest* request);
     void handleStopExperiment(AsyncWebServerRequest* request);
     void handleExperimentStatus(AsyncWebServerRequest* request);
+    void handleListExperiments(AsyncWebServerRequest* request);
 
     void handleDownloadCsv(AsyncWebServerRequest* request);
 };
