@@ -1,8 +1,7 @@
 #include <cstdio>
-
+#include "utils/logger/Logger.h"
 #include "StorageManager.h"
 #include "config/Config.h"
-
 
 void StorageManager::begin()
 {

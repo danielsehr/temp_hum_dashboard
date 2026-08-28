@@ -1,12 +1,8 @@
 #pragma once
 
-#include "utils/logger/Logger.h"
-#include "StorageManager.h"
+#include <LittleFS.h>
 #include "state/SensorData.h"
 #include "state/Experiment.h"
-
-#include <LittleFS.h>
-
 
 class StorageManager
 {
